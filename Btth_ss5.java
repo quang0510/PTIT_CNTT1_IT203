@@ -13,7 +13,6 @@ public class Btth_ss5 {
 
         String[] students = new String[max];
         int size = 0;
-
         int choice;
 
         do {
@@ -25,47 +24,64 @@ public class Btth_ss5 {
             System.out.println("5. Tìm kiếm MSSV");
             System.out.println("6. Thoát");
             System.out.print("Chọn: ");
+
             choice = sc.nextInt();
+            sc.nextLine();
 
             switch (choice) {
                 case 1:
-
                     printStudent(students, size);
                     break;
 
                 case 2:
-
                     if (size == max) {
                         System.out.println("Danh sách sinh viên full");
                         break;
                     }
 
-                    System.out.print("Nhập mã sinh viên cần thêm : ");
+                    System.out.print("Nhập mã sinh viên cần thêm: ");
                     String id = sc.nextLine();
 
                     size = addStudent(students, size, id);
                     break;
 
                 case 3:
+                    if (size == 0) {
+                        System.out.println("Danh sách trống");
+                        break;
+                    }
+
                     System.out.print("Nhập index cần sửa: ");
                     int index = sc.nextInt();
                     sc.nextLine();
 
-                    System.out.print("Nhập mã sinh viên mới : ");
+                    System.out.print("Nhập mã sinh viên mới: ");
                     String newId = sc.nextLine();
 
                     updateStudent(students, size, index, newId);
                     break;
 
                 case 4:
-                    System.out.print("Nhập mã sinh viên  cần xóa: ");
+                    if (size == 0) {
+                        System.out.println("Danh sách trống");
+                        break;
+                    }
+
+                    System.out.print("Nhập mã sinh viên cần xóa: ");
                     String deleteId = sc.nextLine();
+
                     size = deleteStudent(students, size, deleteId);
                     break;
 
                 case 5:
+                    if (size == 0) {
+                        System.out.println("Danh sách trống");
+                        break;
+                    }
+
                     System.out.print("Nhập chuỗi cần tìm: ");
                     String key = sc.nextLine();
+
                     searchStudent(students, size, key);
                     break;
 
@@ -80,7 +96,6 @@ public class Btth_ss5 {
         } while (choice != 6);
     }
 
-
     public static void printStudent(String[] students, int size) {
         if (size == 0) {
             System.out.println("Danh sách sinh viên trống");
@@ -94,27 +109,23 @@ public class Btth_ss5 {
 
     public static int addStudent(String[] students, int size, String id) {
         if (!id.matches(regex)) {
-            System.out.println("Mã sinh viên k hợp lệ");
+            System.out.println("Mã sinh viên không hợp lệ");
             return size;
         }
 
         students[size++] = id;
-        System.out.println("Thêm thành công ");
+        System.out.println("Thêm thành công");
         return size;
     }
 
     public static void updateStudent(String[] students, int size, int index, String newId) {
-        if (size == 0) {
-            System.out.println("Danh sách trống");
-            return;
-        }
         if (index < 0 || index >= size) {
-            System.out.println("Index không hợp lệ ");
+            System.out.println("Index không hợp lệ");
             return;
         }
 
         if (!newId.matches(regex)) {
-            System.out.println("Mã số sinh viên k đúng định dạng ");
+            System.out.println("Mã sinh viên không đúng định dạng");
             return;
         }
 
@@ -123,11 +134,6 @@ public class Btth_ss5 {
     }
 
     public static int deleteStudent(String[] students, int size, String id) {
-        if (size == 0) {
-            System.out.println("Danh sách trống");
-            return size;
-        }
-
         int index = -1;
 
         for (int i = 0; i < size; i++) {
@@ -138,33 +144,27 @@ public class Btth_ss5 {
         }
 
         if (index == -1) {
-            System.out.println("Không tìm thấy sinh viên ");
+            System.out.println("Không tìm thấy sinh viên");
             return size;
         }
 
         for (int i = index; i < size - 1; i++) {
             students[i] = students[i + 1];
         }
+
+        students[size - 1] = null;
         size--;
 
-        System.out.println("Xóa thành công ");
+        System.out.println("Xóa thành công");
         return size;
     }
 
     public static void searchStudent(String[] students, int size, String key) {
-        if (size == 0) {
-            System.out.println("Danh sách trống");
-            return;
-        }
-
         boolean count = false;
-
         key = key.toLowerCase();
 
         for (int i = 0; i < size; i++) {
-
             if (students[i].toLowerCase().contains(key)) {
-
                 System.out.printf("Index %d : %s%n", i, students[i]);
                 count = true;
             }
